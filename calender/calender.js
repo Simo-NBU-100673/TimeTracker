@@ -38,12 +38,12 @@ function setValuesToInput(){
     if(firstClickedDate && secondClickedDate){
         //makes the date to be in format DD/MM/YYYY and the set the value of the input field to be the two dates separated by a dash
         calenderInput.value = `${getDateStringFromCell(firstClickedDate)} - ${getDateStringFromCell(secondClickedDate)}`;
-        return;
-    }
 
-    if(firstClickedDate){
+    } else if(firstClickedDate){
         calenderInput.value = getDateStringFromCell(firstClickedDate);
     }
+
+    calenderInput.dispatchEvent(new Event('change'));
 }
 
 function getDateStringFromCell(cell){
