@@ -2,7 +2,10 @@ console.log("From background.js");
 
 let currentTabId = null;
 let currentTabDomain = null;
-const ENUM_KEYS = ['Important', 'Other'];
+const ENUM_KEYS = {
+    IMPORTANT:'Important',
+    OTHER:'Other'
+};
 
 //TODO make a function to get the ImportantUrlDomains array from the chrome storage at startup
 const ImportantUrlDomains = [];
@@ -83,7 +86,7 @@ function saveDomainToStorage(currentTabDomain, timeDifference) {
         let dateString = new Date().toDateString();
         // console.log(keys);
         if (currentTabDomain.important) {
-            let elementToUpdate = keys[ENUM_KEYS[0]].find((element) => element.url === currentTabDomain.domain);
+            let elementToUpdate = keys[ENUM_KEYS.IMPORTANT].find((element) => element.url === currentTabDomain.domain);
 
             if (elementToUpdate) {
                 elementToUpdate.milliseconds += timeDifference;
@@ -92,7 +95,7 @@ function saveDomainToStorage(currentTabDomain, timeDifference) {
                     duration: timeDifference
                 });
             }else {
-                keys[ENUM_KEYS[0]].push({
+                keys[ENUM_KEYS.IMPORTANT].push({
                     url: currentTabDomain.domain,
                     milliseconds: timeDifference,
                     dates: [{
@@ -102,7 +105,7 @@ function saveDomainToStorage(currentTabDomain, timeDifference) {
                 });
             }
         } else {
-            let elementToUpdate = keys[ENUM_KEYS[1]].find((element) => element.url === currentTabDomain.domain);
+            let elementToUpdate = keys[ENUM_KEYS.OTHER].find((element) => element.url === currentTabDomain.domain);
 
             if (elementToUpdate) {
                 elementToUpdate.milliseconds += timeDifference;
@@ -111,7 +114,7 @@ function saveDomainToStorage(currentTabDomain, timeDifference) {
                     duration: timeDifference
                 });
             }else {
-                keys[ENUM_KEYS[1]].push({
+                keys[ENUM_KEYS.OTHER].push({
                     url: currentTabDomain.domain,
                     milliseconds: timeDifference,
                     dates: [{
@@ -128,13 +131,13 @@ function saveDomainToStorage(currentTabDomain, timeDifference) {
 }
 
 function getDomainFromStorage(callback) {
-    chrome.storage.sync.get([ENUM_KEYS[0], ENUM_KEYS[1]], function (items) {
-        if (items[ENUM_KEYS[0]] === undefined) {
-            items[ENUM_KEYS[0]] = [];
+    chrome.storage.sync.get([ENUM_KEYS.IMPORTANT, ENUM_KEYS.OTHER], function (items) {
+        if (items[ENUM_KEYS.IMPORTANT] === undefined) {
+            items[ENUM_KEYS.IMPORTANT] = [];
         }
 
-        if (items[ENUM_KEYS[1]] === undefined) {
-            items[ENUM_KEYS[1]] = [];
+        if (items[ENUM_KEYS.OTHER] === undefined) {
+            items[ENUM_KEYS.OTHER] = [];
         }
 
         const KEYS = JSON.parse(JSON.stringify(items));

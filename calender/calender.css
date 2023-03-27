@@ -142,7 +142,7 @@
 #calendar td.selected {
     background-color: #5083f5;
     color: #fff;
-    border: 1px solid #ccc;
+    /*border: 1px solid #ccc;*/
 }
 
 #calendar td.selected.start-date {
