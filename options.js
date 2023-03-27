@@ -4,12 +4,15 @@ const addNewDomainButton = document.getElementById('add-new-domain');
 const addNewDomainInput = document.getElementById('input-field');
 const timeIntervalSelectInput = document.getElementById('time-interval');
 const toggle = document.getElementById('switch');
+const timePeriodInput = document.getElementById('range-input');
+let datePeriod;
 
 window.onload = init;
 
 function init(){
     initTimeSelection();
     initToggle();
+    setEventListenerRangeInput();
 
     chrome.storage.sync.get(['Important', 'Other'], function (items) {
         items = JSON.parse(JSON.stringify(items));
@@ -26,6 +29,26 @@ function init(){
 
         setAddNewDomainButtonListener();
     });
+}
+
+function setEventListenerRangeInput() {
+    timePeriodInput.addEventListener('change', () => {
+        const [start, end = start] = timePeriodInput.value.split(' - ').map(parseDate);
+        if (start.toString() === "Invalid Date" || end.toString() === "Invalid Date") {
+            const today = new Date();
+            const oneWeekLater = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+            datePeriod = { START: today, END: oneWeekLater };
+        } else {
+            datePeriod = { START: start, END: end };
+        }
+        console.log(datePeriod);
+    });
+}
+
+//function that gets date in format DD/MM/YYYY and returns it in Date object
+function parseDate(dateStr) {
+    const [day, month, year] = dateStr.split('/');
+    return new Date(year, month - 1, day);
 }
 
 function initToggle(){
