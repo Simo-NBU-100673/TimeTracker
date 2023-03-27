@@ -261,7 +261,16 @@ function addNewDomain(){
             return;
         }
 
-        array.push({url: domain, milliseconds: 0});
+        // array.push({url: domain,
+        //     milliseconds: 0});
+        array.push({
+                    url: domain,
+                    milliseconds: 0,
+                    dates: [{
+                        date: new Date(),
+                        duration: 0
+                    }]
+                });
         updateImportantDomains(array);
 
         const tableRow = buildTableRow(domain);

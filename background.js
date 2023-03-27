@@ -8,7 +8,7 @@ const ENUM_KEYS = {
 };
 
 //TODO make a function to get the ImportantUrlDomains array from the chrome storage at startup
-const ImportantUrlDomains = [];
+const ImportantUrlDomains = ["www.google.com"];
 
 //make a event listener for change of the active tab
 chrome.tabs.onActivated.addListener(function(activeInfo) {
@@ -83,6 +83,7 @@ function getTimeDifference(startTime, endTime) {
 function saveDomainToStorage(currentTabDomain, timeDifference) {
 
     getDomainFromStorage(function (keys) {
+        console.log(keys);
         let dateString = new Date().toDateString();
         // console.log(keys);
         if (currentTabDomain.important) {
