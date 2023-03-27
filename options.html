@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pop-up</title>
+    <link rel="stylesheet" href="options.css">
+    <link rel="stylesheet" href="calender/calender.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,500;0,600;0,800;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
+</head>
+<body>
+    <section class="header">
+        <h1>TimeTracker</h1>
+    </section>
+    <section class="body">
+        <section class="form-wrapper">
+            <div class="head">
+                <div class="time-strategy">
+                    <label for="time-interval">Time Interval:</label>
+                    <select id="time-interval" name="time-interval">
+                        <option value="days">Day</option>
+                        <option value="hours">Hour</option>
+                        <option value="minutes">Minute</option>
+                        <option value="seconds">Second</option>
+                        <option value="milliseconds">Millisecond</option>
+                    </select>
+                </div>
+                <div class="toggle-switch">
+                    <label for="switch">Toggle switch:</label>
+                    <select id="switch" name="switch">
+                        <option value="Working" selected>Working</option>
+                        <option value="Stopped">Stopped</option>
+                    </select>
+                </div>
+            </div>
+            <div class="period">
+                <label for="range-input">Select a date range</label>
+                <input name="date-range-input" type="text" id="range-input">
+            </div>
+            <div class="add-domain">
+                <label for="input-field">Add new domain</label>
+                <div class="add-input">
+                    <input type="text" id="input-field" name="input-field">
+                    <button id="add-new-domain">Add</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="important-table-wrapper">
+            <div class="table-title important">
+                <h2>Important domains</h2>
+            </div>
+            <table>
+                <tbody id="table-important">
+
+                </tbody>
+            </table>
+        </section>
+
+        <section class="statistics-wrapper">
+            <div class="chart-wrapper">
+                <table class="charts-css area multiple" id="my-chart">
+
+                    <tbody>
+                    <tr>
+                        <td style="--start: 0.2; --size: 0.4"> <span class="data"> $ 40K </span> </td>
+                        <td style="--start: 0.3; --size: 0.6"> <span class="data"> $ 50K </span> </td>
+                    </tr>
+                    <tr>
+                        <td style="--start: 0.4; --size: 0.8"> <span class="data"> $ 80K </span> </td>
+                        <td style="--start: 0.6; --size: 0.4"> <span class="data"> $ 30K </span> </td>
+                    </tr>
+                    <tr>
+                        <td style="--start: 0.8; --size: 0.6"> <span class="data"> $ 60K </span> </td>
+                        <td style="--start: 0.4; --size: 0.9"> <span class="data"> $ 120K </span> </td>
+                    </tr>
+                    <tr>
+                        <td style="--start: 0.6; --size: 1.0"> <span class="data"> $ 100K </span> </td>
+                        <td style="--start: 0.9; --size: 0.7"> <span class="data"> $ 60K </span> </td>
+                    </tr>
+                    <tr>
+                        <td style="--start: 1.0; --size: 0.3"> <span class="data"> $ 30K </span> </td>
+                        <td style="--start: 0.7; --size: 0.11"> <span class="data"> $ 150K </span> </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </section>
+    </section>
+    <section class="footer">
+
+    </section>
+</body>
+<script src="options.js"></script>
+<script src="calender/calender.js"></script>
+</html>

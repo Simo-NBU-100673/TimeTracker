@@ -1,0 +1,260 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}
+
+body{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+    padding: 20px;
+}
+
+.header{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5083f5;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 10px 20px;
+}
+
+section.body{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 20px;
+    /*border: 1px solid #5083f5;*/
+}
+
+/**/
+
+section.body section {
+    width: 100%;
+    min-height: 310px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: Poppins, sans-serif;
+    color: #415583;
+    background-color: white;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+section.body section.form-wrapper div{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+section.body section.form-wrapper div.head{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+select>option{
+    color: #415583;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-wrapper div input,
+.form-wrapper div select{
+    width: 100%;
+    height: 40px;
+    border: 1px solid #DEE2EB;
+    border-radius: 10px;
+    padding: 8px 20px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #415583;
+}
+
+.form-wrapper div input:focus,
+.form-wrapper div select:focus{
+    outline: none;
+    border: 1px solid #5083f5;
+}
+
+.form-wrapper div button{
+    width: 100%;
+    height: 40px;
+    border: 1px solid #DEE2EB;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #415583;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.form-wrapper div button:hover{
+    background-color: #5083f5;
+    color: #ffffff;
+}
+
+.form-wrapper div button:focus{
+    outline: none;
+}
+
+.form-wrapper div button:active{
+    background-color: #415583;
+    color: #ffffff;
+}
+
+div.drp-buttons button{
+    width: 60px;
+    height: 30px;
+    border: 1px solid #DEE2EB;
+    border-radius: 10px;
+    padding: 5px 20px;
+    font-size: 14px;
+    font-weight: 200;
+    color: #415583;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+div.drp-buttons button:hover{
+    background-color: #5083f5;
+    color: #ffffff;
+}
+
+table{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+section section.important-table-wrapper{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.table-title{
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 10px 10px 0 0;
+    background-color: #5083f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.important-table-wrapper tbody{
+    width: 100%;
+    height: 100%;
+    max-height: 220px;
+    display: block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+/* Style the scrollbar */
+.important-table-wrapper tbody::-webkit-scrollbar {
+    width: 4px;
+}
+
+.important-table-wrapper tbody::-webkit-scrollbar-track {
+    background-color: #fff;
+}
+
+.important-table-wrapper tbody::-webkit-scrollbar-thumb {
+    background-color: rgba(80, 131, 245,0.5);
+    border-radius: 3px;
+}
+
+.important-table-wrapper tbody tr{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #DEE2EB;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.important-table-wrapper tbody tr td:last-child{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.important-table-wrapper tbody tr:hover{
+    background-color: #f5f5f5;
+}
+
+section.statistics-wrapper{
+    width: 100%;
+    height: 100%;
+}
+
+div.chart-wrapper{
+    width: 100%;
+    height: 100%;
+}
+
+section.statistics-wrapper div table{
+    width: 100%;
+    height: 270px;
+}
+
+#table-important i{
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#table-important i.fa-edit:hover{
+    color: #5083f5;
+}
+
+#table-important i.fa-trash-alt:hover{
+    color: #f55050;
+}
