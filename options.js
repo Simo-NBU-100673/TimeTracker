@@ -261,14 +261,30 @@ function addNewDomain(){
             return;
         }
 
-        array.push({
-                    url: domain,
-                    milliseconds: 0,
-                    dates: [{
-                        date: new Date(),
-                        duration: 0
-                    }]
-                });
+        const otherElement = items.Other.find(function (element) {
+            return element.url === domain;
+        });
+
+        if(otherElement !== undefined){
+            array.push(otherElement);
+            //remove the element from the other array
+            const index = items.Other.indexOf(otherElement);
+            items.Other.splice(index, 1);
+
+            chrome.storage.sync.set({ 'Other': items.Other }, function () {
+                console.log('Value of "Other" key set in Chrome storage.');
+            });
+        } else {
+            array.push({
+                url: domain,
+                milliseconds: 0,
+                dates: [{
+                    date: new Date(),
+                    duration: 0
+                }]
+            });
+        }
+
         updateImportantDomains(array);
 
         const tableRow = buildTableRow(domain);

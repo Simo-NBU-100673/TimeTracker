@@ -7,8 +7,17 @@ const ENUM_KEYS = {
     OTHER:'Other'
 };
 
-//TODO make a function to get the ImportantUrlDomains array from the chrome storage at startup
-const ImportantUrlDomains = ["www.google.com"];
+//TODO make a function to get the ImportantUrlDomains array from the chrome storage at startup and do this with promises
+const ImportantUrlDomains = [];
+
+//when the extension is installed, get the ImportantUrlDomains array from the chrome storage
+chrome.storage.sync.get('Important', function (items) {
+    items = JSON.parse(JSON.stringify(items));
+    if (items.Important === undefined) {
+        items.Important = [];
+    }
+    ImportantUrlDomains.push(...items.Important);
+});
 
 //make a event listener for change of the active tab
 chrome.tabs.onActivated.addListener(function(activeInfo) {
