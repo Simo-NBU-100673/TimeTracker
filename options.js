@@ -17,7 +17,6 @@ function init(){
     chrome.storage.sync.get(['Important', 'Other'], function (items) {
         items = JSON.parse(JSON.stringify(items));
         const array = items.Important;
-        console.log(array);
 
         initializeTable(domainTableBody, array);
 
@@ -41,7 +40,9 @@ function setEventListenerRangeInput() {
         } else {
             datePeriod = { START: start, END: end };
         }
-        console.log(datePeriod);
+
+        //create the chart
+        buildChart(datePeriod);
     });
 }
 
@@ -124,6 +125,9 @@ timeSelection.addEventListener('change', function () {
     const timeStrategy = timeSelection.value;
     //set the time strategy
     setTimeStrategy(timeStrategy);
+
+    //rebuild the chart
+    buildChart(datePeriod);
 });
 
 function setTimeStrategy(timeStrategy){
@@ -261,8 +265,6 @@ function addNewDomain(){
             return;
         }
 
-        // array.push({url: domain,
-        //     milliseconds: 0});
         array.push({
                     url: domain,
                     milliseconds: 0,
@@ -300,24 +302,190 @@ function smoothScrollToBottom(element) {
 
     // Define the scroll animation function
     function scrollAnimation(currentTime) {
-        if (startTime === null) startTime = currentTime; // Set the start time of the animation
+        if (startTime === null) startTime = currentTime;
 
-        let timeElapsed = currentTime - startTime; // Calculate the time elapsed since the start of the animation
-         // Calculate the new scroll position using the easing function
-        element.scrollTop = easeInOutQuad(timeElapsed, startPosition, distance, duration); // Scroll the element to the new position
+        let timeElapsed = currentTime - startTime;
+        element.scrollTop = easeInOutQuad(timeElapsed, startPosition, distance, duration);
 
-        if (timeElapsed < duration) requestAnimationFrame(scrollAnimation); // Request the next animation frame until the animation is complete
+        if (timeElapsed < duration) requestAnimationFrame(scrollAnimation);
     }
 
-    // Get the current scroll position
     let startPosition = element.scrollTop;
-
-    // Calculate the distance to scroll
     let distance = element.scrollHeight - startPosition;
-
-    // Set the start time of the animation to null
     let startTime = null;
 
     // Start the scroll animation
     requestAnimationFrame(scrollAnimation);
+}
+
+function buildChart(datePeriod) {
+    const promise1 = new Promise((resolve, reject) => {
+        getDateArray('Important', (importantDurations) => {
+            const trImportantElements = new Map(importantDurations);
+            resolve(trImportantElements);
+        });
+    });
+
+    const promise2 = new Promise((resolve, reject) => {
+        getDateArray('Other', (otherDurations) => {
+            const trOtherElements = new Map(otherDurations);
+            resolve(trOtherElements);
+        });
+    });
+
+    Promise.all([promise1, promise2]).then(([trImportantElements, trOtherElements]) => {
+        const filteredTrImportantElements = filterDateRange(trImportantElements, datePeriod);
+        const filteredTrOtherElements = filterDateRange(trOtherElements, datePeriod);
+        const chart = generateChart(filteredTrImportantElements, filteredTrOtherElements);
+        renderChart(chart);
+    });
+}
+
+function filterDateRange(trElements, datePeriod) {
+    const firstDate = new Date(datePeriod.START);
+    const lastDate = new Date(datePeriod.END);
+    return new Map([...trElements].filter(([key, value]) => {
+        return new Date(key) >= firstDate && new Date(key) <= lastDate;
+    }));
+}
+
+function renderChart(chart) {
+    const chartWrapper = document.querySelector('.chart-wrapper');
+    chartWrapper.innerHTML = '';
+    chartWrapper.appendChild(chart);
+}
+
+
+
+function generateChart(importantData, otherData) {
+    const chart = document.createElement('table');
+    chart.classList.add('charts-css', 'area', 'multiple', 'show-labels', 'show-data-on-hover');
+    chart.id = 'my-chart';
+
+    const tbody = document.createElement('tbody');
+    chart.appendChild(tbody);
+
+    const totalDuration = Array.from(importantData.values()).reduce((acc, curr) => acc + curr, 0) +
+        Array.from(otherData.values()).reduce((acc, curr) => acc + curr, 0);
+
+    const data = new Map([...importantData, ...otherData]);
+
+    const dates = [...data.keys()].sort((a, b) => new Date(a) - new Date(b));
+
+    let prevStart = 0;
+    dates.forEach((date) => {
+        const tr = document.createElement('tr');
+        tbody.appendChild(tr);
+        createChartLabel(tr, date);
+
+        let hasImportantData = false;
+
+        if (importantData.has(date)) {
+            const value = importantData.get(date);
+            const td = createTdElement(value, totalDuration, prevStart);
+            tr.appendChild(td);
+            prevStart += value;
+            hasImportantData = true;
+        }
+
+        if (otherData.has(date)) {
+            const value = otherData.get(date);
+            const td = createTdElement(value, totalDuration, prevStart);
+            tr.appendChild(td);
+            prevStart += value;
+        }
+
+        if (!hasImportantData) {
+            tr.appendChild(createEmptyTdElement());
+        }
+    });
+
+    return chart;
+}
+
+function createChartLabel(tr, date){
+    const th = document.createElement('th');
+    th.scope = 'row';
+    let formattedDate = new Date(String(date));
+    //make the date look like this: DD/MM
+    th.textContent = String(formattedDate.getDate() + '/' + (formattedDate.getMonth() + 1));
+    tr.appendChild(th);
+}
+
+function createTdElement(value, totalDuration, prevStart) {
+    const td = document.createElement('td');
+    const start = (prevStart / totalDuration).toFixed(1);
+    const size = (value / totalDuration).toFixed(1);
+    td.style.setProperty('--start', start);
+    td.style.setProperty('--size', size);
+    // td.innerHTML = `<span class="data">${value}</span>`;
+    parseTime(value, function (time) {
+        td.innerHTML = `<span class="data">${time}</span>`;
+    });
+    return td;
+}
+
+function createEmptyTdElement() {
+    const td = document.createElement('td');
+    td.innerHTML = `<span class="data"></span>`;
+    return td;
+}
+
+const getDateArray = function(type, callback) {
+    chrome.storage.sync.get([type], function (items) {
+        let durations = new Map();
+
+        items[type].forEach(function (element) {
+            // Map date.date to date.duration inside the element.dates array
+            element.dates.forEach(function (date) {
+                if(!durations.has(date.date)) {
+                    durations.set(date.date, date.duration);
+                } else {
+                    durations.set(date.date, durations.get(date.date) + date.duration);
+                }
+            });
+        });
+
+        callback(durations);
+    });
+}
+
+function parseTime(milliseconds, callback) {
+    getTimeStrategy(function (timeStrategy) {
+        let result;
+        switch (timeStrategy) {
+            case 'days':
+                result = Math.round(milliseconds / 86400000);
+                callback(result + ' days');
+                break;
+            case 'hours':
+                result = Math.round(milliseconds / 3600000);
+                callback(result + ' hours');
+                break;
+            case 'minutes':
+                result = Math.round(milliseconds / 60000);
+                callback(result + ' minutes');
+                break;
+            case 'seconds':
+                result = Math.round(milliseconds / 1000);
+                callback(result + ' seconds');
+                break;
+            case 'milliseconds':
+                callback(milliseconds + ' milliseconds');
+                break;
+            default:
+                callback('Invalid time strategy');
+                break;
+        }
+    });
+}
+
+function getTimeStrategy(callback) {
+    chrome.storage.sync.get('TimeOption', function (items) {
+        let timeStrategy = items.TimeOption;
+        if (timeStrategy === undefined) {
+            timeStrategy = 'minutes';
+        }
+        callback(timeStrategy);
+    });
 }
