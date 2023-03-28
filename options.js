@@ -158,7 +158,6 @@ function setEditEventListener(editButton){
 
         //make an event listener which will be triggered when the user presses enter or leaves the input field this must be one event listener with two events
         input.addEventListener('keyup', function (event) {
-            console.log(event.type);
             if(event.key === 'Enter'){
                 const newDomain = input.value;
                 changeDomain(oldDomain, newDomain);
@@ -196,7 +195,6 @@ function changeDomain(oldDomain, newDomain){
 function updateImportantDomains(array){
     chrome.storage.sync.set({ 'Important': array }, function () {
         console.log('Value of "Important" key set in Chrome storage.');
-        console.log(array);
     });
 }
 
@@ -239,9 +237,7 @@ addNewDomainInput.addEventListener('keyup', function (event) {
     }
 });
 function setAddNewDomainButtonListener(){
-    addNewDomainButton.addEventListener('click', function () {
-        addNewDomain();
-    });
+    addNewDomainButton.addEventListener('click', addNewDomain);
 }
 
 function addNewDomain(){
