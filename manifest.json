@@ -2,32 +2,36 @@
     "name": "TimeTracker",
     "description": "Tracks the time you spend on each tab and saves it locally on chrome storage",
     "version": "1.0.0",
-    "manifest_version": 2,
+    "manifest_version": 3,
     "icons": {
-        "16": "./Icons/16-icon.png",
-        "32": "./Icons/32-icon.png",
-        "48": "./Icons/48-icon.png",
-        "64": "./Icons/64-icon.png",
-        "80": "./Icons/80-icon.png",
-        "100": "./Icons/100-icon.png",
-        "128": "./Icons/128-icon.png"
+        "16": "Icons/16-icon.png",
+        "32": "Icons/32-icon.png",
+        "48": "Icons/48-icon.png",
+        "128": "Icons/128-icon.png"
     },
-    "web_accessible_resources": [
-        "popup.html"
-	],
     "background": {
-        "scripts": ["./background.js"]
+        "service_worker": "background.js"
     },
-    "options_page": "./options.html",
-    "browser_action": {
-        "default_popup": "./popup.html",
-        "default_title": "Click to open the popup"
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "Click to open the popup",
+        "default_icon": {
+            "16": "Icons/16-icon.png",
+            "32": "Icons/32-icon.png",
+            "48": "Icons/48-icon.png",
+            "128": "Icons/128-icon.png"
+        }
     },
+    "options_page": "options.html",
     "permissions": [
-        "tabs",
         "storage",
-        "https://*/",
-        "http://*/",
+        "activeTab",
+        "scripting",
+        "tabs",
+        "<all_urls>",
         "fileSystem"
+    ],
+    "host_permissions": [
+        "*"
     ]
 }
